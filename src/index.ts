@@ -1,24 +1,26 @@
+import dotenv from "dotenv";
+dotenv.config()
 import express from "express";
 import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { Server } from "socket.io";
-import sqlite3, {ERROR as sqError} from "sqlite3";
+import sqlite3, { ERROR as sqError } from "sqlite3";
 import { open } from "sqlite";
-import { availableParallelism } from "node:os";
-import cluster from "node:cluster";
-import { createAdapter, setupPrimary } from "@socket.io/cluster-adapter";
+// import { availableParallelism } from "node:os";
+// import cluster from "node:cluster";
+// import { createAdapter, setupPrimary } from "@socket.io/cluster-adapter";
 
-if (cluster.isPrimary) {
-  const numCPUs = availableParallelism();
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork({
-      PORT: 8080 + i,
-    });
-  }
+// if (cluster.isPrimary) {
+//   const numCPUs = availableParallelism();
+//   for (let i = 0; i < numCPUs; i++) {
+//     cluster.fork({
+//       PORT: 8080 + i,
+//     });
+//   }
 
-  setupPrimary();
-} else {
+//   setupPrimary();
+// } else {
   const db = await open({
     filename: "chat.db",
     driver: sqlite3.Database,
@@ -36,7 +38,7 @@ if (cluster.isPrimary) {
   const server = createServer(app);
   const io = new Server(server, {
     connectionStateRecovery: {},
-    adapter: createAdapter(),
+    // adapter: createAdapter(),
   });
 
   const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -83,9 +85,9 @@ if (cluster.isPrimary) {
     }
   });
 
-  const port = process.env.PORT;
+  const port = process.env.PORT || 3000;
 
   server.listen(port, () => {
     console.log(`server running at http://localhost:${port}`);
   });
-}
+// }
