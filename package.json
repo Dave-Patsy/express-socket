@@ -34,5 +34,5 @@
     "esm": true,
     "experimentalSpecifierResolution": "node"
   },
-  "packageManager": "pnpm@9"
+  "packageManager": "pnpm@9.0.4"
 }
