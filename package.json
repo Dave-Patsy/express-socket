@@ -33,5 +33,6 @@
     "transpileOnly": true,
     "esm": true,
     "experimentalSpecifierResolution": "node"
-  }
+  },
+  "packageManager": "pnpm@9"
 }
